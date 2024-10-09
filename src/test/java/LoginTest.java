@@ -89,6 +89,7 @@ public class LoginTest extends Hooks {
         Assert.assertEquals(actualProductPrices, expectedProductPrices, "The products are not sorted by price (low to high)");
         Thread.sleep(5000);
 //    Trebuia sa imi apara suma actuala si expected?
+//
     }
 
 
