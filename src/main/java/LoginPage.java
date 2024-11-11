@@ -5,6 +5,7 @@ import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 
 // Declaring the CheckoutPage class, which extends the BasePage class.
@@ -35,7 +36,7 @@ public class LoginPage extends BasePage {
     @FindBy(css = ".svg-inline--fa.fa-sign-in-alt.fa-w-16 ")
     private WebElement loginIcon;
 
-    public void clickLoginIcon(){
+    public void clickLoginIcon() {
         loginIcon.click();
     }
 
@@ -45,12 +46,14 @@ public class LoginPage extends BasePage {
     public void setUsername(String user) {
         username.sendKeys(user);
     }
+
     @FindBy(id = "password")
     private WebElement password;
 
-    public void setPassword(String pass){
+    public void setPassword(String pass) {
         password.sendKeys(pass);
     }
+
     @FindBy(css = ".btn.btn-primary")
     private WebElement getLoginButton;
 
@@ -61,7 +64,7 @@ public class LoginPage extends BasePage {
     @FindBy(linkText = "dino")
     private WebElement dino;
 
-    public WebElement getDino(){
+    public WebElement getDino() {
         return dino;
     }
 
@@ -72,7 +75,7 @@ public class LoginPage extends BasePage {
         return sortBar;
     }
 
-    public void selecOption(WebElement element,  String option) {
+    public void selecOption(WebElement element, String option) {
         Select optionSelect = new Select(element);
         optionSelect.selectByVisibleText(option);
     }
@@ -80,11 +83,11 @@ public class LoginPage extends BasePage {
     @FindBy(css = ".svg-inline--fa.fa-undo.fa-w-16 ")
     private WebElement resetBtn;
 
-    public void clickResetButton(){
+    public void clickResetButton() {
         resetBtn.click();
     }
 
-    public void loginUser(){
+    public void loginUser() {
         clickLoginIcon();
         setUsername("dino");
         setPassword("choochoo");
@@ -95,15 +98,111 @@ public class LoginPage extends BasePage {
     @FindBy(css = ".card-link")
     private List<WebElement> productElements;
 
-    public List<WebElement> getProductElements(){
+    public List<WebElement> getProductElements() {
         return productElements;
     }
 
-    @FindBy(xpath = "p[@class='card-text']")
+    @FindBy(xpath = "//span[@style='font-weight: bold; font-size: 16px;']")
     private List<WebElement> priceElements;
 
-    public List<WebElement> getPriceElements(){
+    public List<WebElement> getPriceElements() {
         return priceElements;
     }
 
+    @FindBy(linkText = "Awesome Granite Chips")
+    private WebElement awesomeGraniteChips;
+
+    public void clickAwesomeGraniteChips() {
+        awesomeGraniteChips.click();
     }
+
+    @FindBy(css = ".svg-inline--fa.fa-cart-plus.fa-w-18.fa-3x ")
+    private WebElement cartButton;
+
+    public void clickCartButton() {
+        cartButton.click();
+    }
+
+    @FindBy(css = ".svg-inline--fa.fa-sign-in-alt.fa-w-16 ")
+    private WebElement incorrectUsername;
+
+    public void incorrectUsername() {
+        clickLoginIcon();
+        setUsername("dinu");
+        setPassword("choochoo");
+        clickLogButton();
+
+    }
+
+    @FindBy(linkText = "dinu")
+    private WebElement dinu;
+
+    public WebElement getDinu() {
+        return dinu;
+    }
+
+    @FindBy(css = ".svg-inline--fa.fa-sign-in-alt.fa-w-16 ")
+    private WebElement incorrectPassword;
+
+    public void incorrectPassword() {
+        clickLoginIcon();
+        setUsername("dino");
+        setPassword("ciuciu");
+        clickLogButton();
+
+    }
+
+    @FindBy(linkText = "ciuciu")
+    private WebElement ciuciu;
+
+    public WebElement getCiuciu() {
+        return ciuciu;
+    }
+
+    @FindBy(css = ".mr-auto.form-control.form-control-sm")
+    private WebElement searchBar;
+
+    public WebElement getSearchBar() {
+        return searchBar;
+    }
+
+    public void setSearchBar(String awesome){
+        searchBar.sendKeys(awesome);
+    }
+
+    @FindBy(css = ".btn.btn-light.btn-sm")
+    private WebElement searchButton;
+
+    public void clickSearchButton(){
+        searchButton.click();
+    }
+
+    @FindBy(css = ".card-link")
+    private WebElement miscProduct;
+
+    public WebElement getMiscProduct() {
+        return miscProduct;
+    }
+
+    @FindBy(css = ".svg-inline--fa.fa-sign-out-alt.fa-w-16 ")
+    private WebElement logoutButton;
+
+    public void clickLogoutButton(){
+        logoutButton.click();
+    }
+
+    @FindBy(css = ".error")
+    private WebElement error;
+
+    public WebElement getError(){
+        return error;
+    }
+
+    @FindBy(xpath = "//span[text()='Hello guest! ']")
+    private WebElement helloGuest;
+
+    public WebElement getHelloGuest(){
+        return helloGuest;
+    }
+
+}

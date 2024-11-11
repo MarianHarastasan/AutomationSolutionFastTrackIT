@@ -1,4 +1,5 @@
 import com.aventstack.extentreports.Status;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -46,15 +47,7 @@ public class LoginTest extends Hooks {
         softAssert = new SoftAssert();
     }
 
-//    @Test(description = "Login Test")
-//    public void loginTest() throws InterruptedException {
-//        loginPage.clickLoginButton();
-//        loginPage.setUsername("dino");
-//        loginPage.setPassword("choochoo");
-//        loginPage.clickLogButton();
-//        Thread.sleep(5000);
-//        assertEquals(loginPage.getDino().getText(), "dino");
-//    }
+
 
     @Test(description = "Sorting Test")
     public void sortTest1() throws InterruptedException {
@@ -75,8 +68,29 @@ public class LoginTest extends Hooks {
     @Test(description = "Sorting Test 2")
     public void sortTest2() throws InterruptedException {
         List<WebElement> priceElements = loginPage.getPriceElements();
-        List<String> actualProductPrices = new ArrayList<>();
+        List<Double> actualProductPrices = new ArrayList<>();
         loginPage.selecOption(loginPage.getSortBar(), "Sort by price (low to high)");
+
+        for (WebElement priceElement : priceElements) {
+            String priceText = priceElement.getText().replace("$", "");
+            actualProductPrices.add(Double.parseDouble(priceText));
+        }
+
+        List<Double> expectedProductPrices = new ArrayList<>(actualProductPrices);
+        expectedProductPrices.sort(Comparator.naturalOrder());
+        System.out.println(actualProductPrices);
+        System.out.println(expectedProductPrices);
+        Assert.assertEquals(actualProductPrices, expectedProductPrices, "The products are not sorted by price (low to high)");
+        Thread.sleep(5000);
+//    Trebuia sa imi apara suma actuala si expected?
+//
+    }
+
+    @Test(description = "Sorting Test")
+    public void sortTest4() throws InterruptedException {
+        List<WebElement> priceElements = loginPage.getPriceElements();
+        List<String> actualProductPrices = new ArrayList<>();
+        loginPage.selecOption(loginPage.getSortBar(), "Sort by price (high to low)");
 
         for (WebElement priceElement : priceElements) {
             String priceText = priceElement.getText().replace("$", "").trim();
@@ -86,10 +100,8 @@ public class LoginTest extends Hooks {
         List<String> expectedProductPrices = new ArrayList<>(actualProductPrices);
         expectedProductPrices.sort(Comparator.naturalOrder());
 
-        Assert.assertEquals(actualProductPrices, expectedProductPrices, "The products are not sorted by price (low to high)");
+        Assert.assertEquals(actualProductPrices, expectedProductPrices, "The products are not sorted by price (high to low)");
         Thread.sleep(5000);
-//    Trebuia sa imi apara suma actuala si expected?
-//
     }
 
 
@@ -163,10 +175,62 @@ public class LoginTest extends Hooks {
     }
 
 
-    @Test(description = "login test")
-    public void loginTest(){
+    @Test(description = "Reset login test")
+    public void loginTest() throws InterruptedException {
         loginPage.loginUser();
         wait.until(ExpectedConditions.visibilityOf(loginPage.getDino()));
         loginPage.clickResetButton();
+        Thread.sleep(5000);
+        assertEquals(loginPage.getHelloGuest().getText(), "Hello guest!", "User was not logged out");
+        
     }
+
+    @Test(description = "Reset cart")
+    public void ResetCart() throws InterruptedException {
+        loginPage.loginUser();
+        wait.until(ExpectedConditions.visibilityOf(loginPage.getDino()));
+        loginPage.clickAwesomeGraniteChips();
+        Thread.sleep(5000);
+        loginPage.clickCartButton();
+        Thread.sleep(5000);
+        loginPage.clickResetButton();
+        Thread.sleep(5000);
+    }
+
+    @Test(description = "Incorrect username test")
+    public void incorrectUsername(){
+        loginPage.incorrectUsername();
+        assertEquals(loginPage.getError().getText(), "Incorrect username or password!", "Message error was not displayed correct");
+    }
+
+    @Test(description = "Incorrect password test")
+    public void incorrectPassword(){
+        loginPage.incorrectPassword();
+        assertEquals(loginPage.getError().getText(), "Incorrect username or password!", "Message error was not displayed correct");
+    }
+
+    @Test(description = "Negative test for search")
+    public void negativeTestForSearch() throws InterruptedException {
+        loginPage.setSearchBar("Marian");
+        wait.until(ExpectedConditions.visibilityOf(loginPage.getSearchBar()));
+        loginPage.clickSearchButton();
+        Thread.sleep(5000);
+
+        try {
+            if(loginPage.getMiscProduct().isDisplayed()) {
+                Assert.fail("Element is still present");
+            }
+        } catch (NoSuchElementException e) {
+            Assert.assertTrue(true, "Element 'Marian' is not found");
+        }
+    }
+
+    @Test(description = "Logout test")
+    public void logoutTest() throws InterruptedException {
+        loginPage.loginUser();
+        loginPage.clickLogoutButton();
+        assertEquals(loginPage.getHelloGuest().getText(), "Hello guest!", "User was not logged out");
+    }
+
+
 }
