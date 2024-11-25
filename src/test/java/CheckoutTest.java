@@ -57,7 +57,7 @@ public class CheckoutTest extends Hooks {
     public void searchTest() {
         checkoutPage.setSearchBar("Awesome");
         checkoutPage.clickSearchButton();
-        ExtentTestNGITestListener.getTest().log(Status.INFO, "The search engine is looking up for the keyword 'mouse'");
+        ExtentTestNGITestListener.getTest().log(Status.INFO, "The search engine is looking up for the keyword 'Awesome'");
 
         List<String> expectedProducts = new ArrayList<>();
         expectedProducts.add("Awesome Granite Chips");
